@@ -23,9 +23,42 @@
         "body": "Hi Priya,\n\nI wanted to follow up on Q3 pricing deck and ask for sign-off by Friday. Follow up with Priya on the Q3 pricing deck. Ask for sign-off by Friday.\n\nDeadline: Friday.\n\nLet me know if anything needs changing.\n\nThanks,",
         "tone": "friendly",
         "intent": "follow-up"
+      },
+      {
+        "draft_id": "e81b3b3edda6",
+        "created_at": "2026-09-06T06:26:53+00:00",
+        "subject": "The Q3 pricing deck and ask for sign-off",
+        "body": "Hi Priya,\n\nI wanted to follow up on the Q3 pricing deck and ask for sign-off by Friday. Follow up with Priya about the Q3 pricing deck. Ask for sign-off by Friday.\n\nDeadline: Friday.\n\nLet me know if anything needs changing.\n\nThanks,",
+        "tone": "friendly",
+        "intent": "follow-up"
+      },
+      {
+        "draft_id": "aa67bd1eeb49",
+        "created_at": "2026-09-06T06:28:35+00:00",
+        "subject": "The Q3 pricing deck and ask for sign-off",
+        "body": "Hi Priya,\n\nI wanted to follow up on the Q3 pricing deck and ask for sign-off by Friday. Follow up with Priya about the Q3 pricing deck. Ask for sign-off by Friday.\n\nDeadline: Friday.\n\nLet me know if anything needs changing.\n\nThanks,",
+        "tone": "friendly",
+        "intent": "follow-up"
       }
     ],
-    "edit_history": []
+    "edit_history": [
+      {
+        "draft_id": "e81b3b3edda6",
+        "created_at": "2026-09-06T06:26:56+00:00",
+        "subject": "The Q3 pricing deck and ask for sign-off",
+        "original": "Hi Priya,\n\nI wanted to follow up on the Q3 pricing deck and ask for sign-off by Friday. Follow up with Priya about the Q3 pricing deck. Ask for sign-off by Friday.\n\nDeadline: Friday.\n\nLet me know if anything needs changing.\n\nThanks,",
+        "edited": "Hey Priya —\n\nI wanted to follow up on the Q3 pricing deck and ask for sign-off by Friday. Follow up with Priya about the Q3 pricing deck. Ask for sign-off by Friday.\n\nDeadline: Friday.\n\nLet me know if anything needs changing.\n\nThanks,",
+        "diff": "--- generated\n+++ edited\n@@ -1,2 +1,2 @@\n-Hi Priya,\n+Hey Priya —\n "
+      },
+      {
+        "draft_id": "aa67bd1eeb49",
+        "created_at": "2026-09-06T06:28:39+00:00",
+        "subject": "The Q3 pricing deck and ask for sign-off",
+        "original": "Hi Priya,\n\nI wanted to follow up on the Q3 pricing deck and ask for sign-off by Friday. Follow up with Priya about the Q3 pricing deck. Ask for sign-off by Friday.\n\nDeadline: Friday.\n\nLet me know if anything needs changing.\n\nThanks,",
+        "edited": "Hey Priya —\n\nI wanted to follow up on the Q3 pricing deck and ask for sign-off by Friday. Follow up with Priya about the Q3 pricing deck. Ask for sign-off by Friday.\n\nDeadline: Friday.\n\nLet me know if anything needs changing.\n\nThanks,",
+        "diff": "--- generated\n+++ edited\n@@ -1,2 +1,2 @@\n-Hi Priya,\n+Hey Priya —\n "
+      }
+    ]
   },
   "demo": {
     "user_id": "demo",
