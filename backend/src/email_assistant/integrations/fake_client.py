@@ -70,6 +70,23 @@ _BANNED = {
     Tone.CONCISE: ["I hope this email finds you well", "just wanted to", "circling back"],
 }
 
+# Model ids this fake will answer for. Anything else is rejected the way a real
+# provider rejects an unknown model, which is what lets the offline demo show a
+# fallback by pointing a route at a bad model id.
+#
+# Coupled to config/mcp.yaml on purpose: test_config asserts every model named
+# there appears here, so adding a model to a routing profile without adding it
+# here fails the suite rather than silently breaking offline mode.
+KNOWN_MODELS = frozenset(
+    {
+        "claude-opus-5",
+        "claude-sonnet-5",
+        "claude-haiku-4-5",
+        "gpt-4o",
+        "gpt-4o-mini",
+    }
+)
+
 # Words that look like a name in "email Priya about X" but are not one.
 _NOT_NAMES = {
     "the", "and", "about", "regarding", "for", "with", "from", "please", "email",
@@ -107,6 +124,13 @@ class FakeProvider:
         self._calls += 1
         if self._fail_with is not None and self._calls <= self._fail_times:
             raise self._fail_with
+
+        # Reject a model id no real provider would serve, exactly as a live 404
+        # would. Without this the offline mode cannot demonstrate fallback at
+        # all: pointing a route at a nonexistent model would silently succeed,
+        # which is the one thing a fake provider must not do.
+        if model not in KNOWN_MODELS and not model.startswith("fake"):
+            raise RetryableError(f"fake: unknown model {model!r}")
 
         rng = random.Random(hashlib.sha256(user.encode("utf-8")).hexdigest())
         payload: Optional[BaseModel] = None

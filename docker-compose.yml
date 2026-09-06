@@ -1,0 +1,23 @@
+services:
+  backend:
+    build: ./backend
+    environment:
+      # Defaults to offline so `docker compose up` works with no keys at all.
+      FAKE_LLM: "${FAKE_LLM:-1}"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY:-}"
+      OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
+      ROUTING_PROFILE: "${ROUTING_PROFILE:-quality}"
+    volumes:
+      # Profiles and the usage log outlive the container; personalization is
+      # worthless if it resets on every restart.
+      - ./backend/data:/app/data
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "3000:80"

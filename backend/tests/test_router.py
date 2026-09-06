@@ -46,7 +46,7 @@ def _parse(router: ModelRouter):
 def test_primary_serves_when_healthy(fast_routing):
     router = make_router({"anthropic": FakeProvider(), "openai": FakeProvider()}, fast_routing)
     _parse(router)
-    assert [c.model for c in router.calls] == ["primary-model"]
+    assert [c.model for c in router.calls] == ["fake-primary"]
     assert router.calls[0].is_fallback is False
 
 
@@ -56,8 +56,8 @@ def test_retries_the_same_model_before_moving_on(fast_routing):
     router = make_router({"anthropic": flaky, "openai": FakeProvider()}, fast_routing)
     _parse(router)
     assert [(c.model, c.outcome) for c in router.calls] == [
-        ("primary-model", "error"),
-        ("primary-model", "success"),
+        ("fake-primary", "error"),
+        ("fake-primary", "success"),
     ]
 
 
@@ -69,9 +69,9 @@ def test_falls_back_across_providers_when_primary_is_exhausted(fast_routing):
 
     assert result.parsed is not None
     assert [c.model for c in router.calls] == [
-        "primary-model",
-        "primary-model",
-        "fallback-model",
+        "fake-primary",
+        "fake-primary",
+        "fake-fallback",
     ]
     assert router.calls[-1].is_fallback is True
     assert router.calls[-1].outcome == "success"
@@ -100,14 +100,14 @@ def test_fatal_error_stops_the_walk(fast_routing):
         _parse(router)
 
     assert len(router.calls) == 1
-    assert all(c.model != "fallback-model" for c in router.calls)
+    assert all(c.model != "fake-fallback" for c in router.calls)
 
 
 def test_provider_without_a_credential_is_skipped_not_tried(fast_routing):
     router = make_router({"anthropic": Unavailable(), "openai": FakeProvider()}, fast_routing)
     _parse(router)
     # Skipping is not a failure, so it must not appear as a failed attempt.
-    assert [c.model for c in router.calls] == ["fallback-model"]
+    assert [c.model for c in router.calls] == ["fake-fallback"]
     assert router.calls[0].outcome == "success"
 
 
@@ -116,7 +116,7 @@ def test_credential_rejected_at_call_time_abandons_that_provider(fast_routing):
     rejected = FakeProvider(fail_with=ProviderUnavailable("401"), fail_times=99)
     router = make_router({"anthropic": rejected, "openai": FakeProvider()}, fast_routing)
     _parse(router)
-    assert [c.model for c in router.calls] == ["fallback-model"]
+    assert [c.model for c in router.calls] == ["fake-fallback"]
 
 
 def test_exhausting_every_candidate_raises_with_a_useful_message(fast_routing):
@@ -128,7 +128,7 @@ def test_exhausting_every_candidate_raises_with_a_useful_message(fast_routing):
 
     message = str(excinfo.value)
     assert "parse" in message
-    assert "primary-model" in message or "Failed" in message
+    assert "fake-primary" in message or "Failed" in message
 
 
 def test_no_providers_available_at_all(fast_routing):
@@ -212,8 +212,8 @@ def test_provider_status_reports_availability(fast_routing):
 def test_candidates_for_exposes_the_configured_order(fast_routing):
     router = make_router({"anthropic": FakeProvider()}, fast_routing)
     assert [c.model for c in router.candidates_for("draft")] == [
-        "primary-model",
-        "fallback-model",
+        "fake-primary",
+        "fake-fallback",
     ]
 
 
@@ -223,7 +223,7 @@ def test_single_candidate_route_still_works():
         active_profile="quality",
         profiles={
             "quality": {
-                "parse": TaskRoute(task="parse", primary=Candidate("anthropic", "only-model"))
+                "parse": TaskRoute(task="parse", primary=Candidate("anthropic", "fake-only"))
             }
         },
         retry=RetryConfig(max_attempts=1, base_delay_seconds=0.0, max_delay_seconds=0.0),

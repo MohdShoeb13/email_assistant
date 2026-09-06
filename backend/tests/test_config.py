@@ -111,3 +111,24 @@ def test_missing_tone_sample_degrades_quietly():
 def test_config_path_resolves_independently_of_cwd():
     assert MCP_CONFIG_PATH.is_absolute()
     assert MCP_CONFIG_PATH.exists()
+
+
+def test_every_configured_model_is_known_to_the_offline_provider():
+    """Offline mode must be able to serve every model the routing config names.
+
+    The fake provider rejects unknown model ids so that a deliberately-broken
+    route can demonstrate fallback. That only works if the legitimate ids are
+    all recognised — otherwise adding a model to mcp.yaml silently breaks every
+    offline run that routes to it.
+    """
+    from email_assistant.integrations.fake_client import KNOWN_MODELS
+
+    config = load_routing_config()
+    configured = {
+        candidate.model
+        for profile in config.profiles.values()
+        for route in profile.values()
+        for candidate in route.candidates
+    }
+    missing = configured - set(KNOWN_MODELS)
+    assert not missing, f"add to fake_client.KNOWN_MODELS: {sorted(missing)}"

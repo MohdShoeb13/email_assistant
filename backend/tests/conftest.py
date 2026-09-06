@@ -50,8 +50,8 @@ def fast_routing() -> RoutingConfig:
         "quality": {
             task: TaskRoute(
                 task=task,
-                primary=Candidate("anthropic", "primary-model"),
-                fallbacks=(Candidate("openai", "fallback-model"),),
+                primary=Candidate("anthropic", "fake-primary"),
+                fallbacks=(Candidate("openai", "fake-fallback"),),
             )
             for task in TASKS
         }
