@@ -1,0 +1,17 @@
+[project]
+name = "email-assistant"
+version = "1.0.0"
+description = "Multi-agent AI email assistant: LangGraph pipeline, cross-provider model routing, React front end."
+requires-python = ">=3.11"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"

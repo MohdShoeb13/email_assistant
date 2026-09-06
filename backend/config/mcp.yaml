@@ -1,0 +1,65 @@
+# Model Control Plane.
+#
+# One entry per agent task. The router tries `primary`, then each entry in
+# `fallbacks` in order, skipping any provider with no API key configured.
+# That skip is why the app still works with one key, or with none at all.
+#
+# Two profiles ship. `quality` never downgrades a task to save money.
+# `cost` routes by difficulty: cheap models for classification, the strong
+# model only where prose quality is actually judged.
+
+active_profile: quality
+
+retry:
+  max_attempts: 3
+  base_delay_seconds: 1.0
+  max_delay_seconds: 8.0
+
+profiles:
+
+  quality:
+    parse:
+      primary:   {provider: anthropic, model: claude-opus-5}
+      fallbacks: [{provider: anthropic, model: claude-sonnet-5},
+                  {provider: openai,    model: gpt-4o}]
+    intent:
+      primary:   {provider: anthropic, model: claude-opus-5}
+      fallbacks: [{provider: anthropic, model: claude-sonnet-5},
+                  {provider: openai,    model: gpt-4o}]
+    tone:
+      primary:   {provider: anthropic, model: claude-opus-5}
+      fallbacks: [{provider: anthropic, model: claude-sonnet-5},
+                  {provider: openai,    model: gpt-4o}]
+    draft:
+      primary:   {provider: anthropic, model: claude-opus-5}
+      fallbacks: [{provider: anthropic, model: claude-sonnet-5},
+                  {provider: openai,    model: gpt-4o}]
+    review:
+      primary:   {provider: anthropic, model: claude-opus-5}
+      fallbacks: [{provider: anthropic, model: claude-sonnet-5},
+                  {provider: openai,    model: gpt-4o}]
+
+  cost:
+    # Extraction and classification are graded on being right, not on prose.
+    parse:
+      primary:   {provider: anthropic, model: claude-haiku-4-5}
+      fallbacks: [{provider: anthropic, model: claude-sonnet-5},
+                  {provider: openai,    model: gpt-4o-mini}]
+    intent:
+      primary:   {provider: anthropic, model: claude-haiku-4-5}
+      fallbacks: [{provider: anthropic, model: claude-sonnet-5},
+                  {provider: openai,    model: gpt-4o-mini}]
+    # Tone and review need judgment, but not the top model.
+    tone:
+      primary:   {provider: anthropic, model: claude-sonnet-5}
+      fallbacks: [{provider: anthropic, model: claude-opus-5},
+                  {provider: openai,    model: gpt-4o}]
+    review:
+      primary:   {provider: anthropic, model: claude-sonnet-5}
+      fallbacks: [{provider: anthropic, model: claude-opus-5},
+                  {provider: openai,    model: gpt-4o}]
+    # The draft is the deliverable. This one never gets downgraded.
+    draft:
+      primary:   {provider: anthropic, model: claude-opus-5}
+      fallbacks: [{provider: anthropic, model: claude-sonnet-5},
+                  {provider: openai,    model: gpt-4o}]

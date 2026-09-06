@@ -1,0 +1,13 @@
+{
+  "default": {
+    "user_id": "default",
+    "name": "Mohammad Shoeb",
+    "role": "Software Engineer",
+    "company": "",
+    "signature": "Mohammad Shoeb",
+    "default_tone": "friendly",
+    "tone_examples": [],
+    "draft_history": [],
+    "edit_history": []
+  }
+}
