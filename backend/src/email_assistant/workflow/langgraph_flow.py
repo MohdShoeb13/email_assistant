@@ -174,6 +174,26 @@ def build_graph(
     return builder.compile(checkpointer=checkpointer or InMemorySaver())
 
 
+# The state channels LangGraph reduces with operator.add rather than replacing.
+ACCUMULATING_KEYS = ("trace", "errors")
+
+
+def merge_update(final: dict[str, Any], update: dict[str, Any]) -> dict[str, Any]:
+    """Apply one streamed node update to an accumulated state dict.
+
+    A caller reassembling state from the stream cannot use dict.update: the node
+    updates carry only each node's *new* trace entries, so a plain update would
+    leave the caller holding the last node's calls and nothing else. This mirrors
+    what the graph's own reducers do internally.
+    """
+    for key, value in (update or {}).items():
+        if key in ACCUMULATING_KEYS and isinstance(value, list):
+            final[key] = list(final.get(key) or []) + value
+        else:
+            final[key] = value
+    return final
+
+
 def run_graph(
     graph: Any,
     state: EmailState,

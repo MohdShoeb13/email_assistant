@@ -7,7 +7,44 @@
     "signature": "Mohammad Shoeb",
     "default_tone": "friendly",
     "tone_examples": [],
-    "draft_history": [],
+    "draft_history": [
+      {
+        "draft_id": "d35abc954a16",
+        "created_at": "2026-09-06T06:12:55+00:00",
+        "subject": "Q3 pricing deck and ask for sign-off by",
+        "body": "Hi Priya,\n\nI wanted to follow up on Q3 pricing deck and ask for sign-off by Friday. Follow up with Priya on the Q3 pricing deck. Ask for sign-off by Friday.\n\nDeadline: Friday.\n\nLet me know if anything needs changing.\n\nThanks,",
+        "tone": "friendly",
+        "intent": "follow-up"
+      },
+      {
+        "draft_id": "5db87021b4d7",
+        "created_at": "2026-09-06T06:13:17+00:00",
+        "subject": "Q3 pricing deck and ask for sign-off by",
+        "body": "Hi Priya,\n\nI wanted to follow up on Q3 pricing deck and ask for sign-off by Friday. Follow up with Priya on the Q3 pricing deck. Ask for sign-off by Friday.\n\nDeadline: Friday.\n\nLet me know if anything needs changing.\n\nThanks,",
+        "tone": "friendly",
+        "intent": "follow-up"
+      }
+    ],
+    "edit_history": []
+  },
+  "demo": {
+    "user_id": "demo",
+    "name": "",
+    "role": "",
+    "company": "",
+    "signature": "",
+    "default_tone": "friendly",
+    "tone_examples": [],
+    "draft_history": [
+      {
+        "draft_id": "5c08bf6feecc",
+        "created_at": "2026-09-06T06:15:55+00:00",
+        "subject": "The Q3 pricing deck and ask for sign-off",
+        "body": "Hi Priya,\n\nI wanted to follow up on the Q3 pricing deck and ask for sign-off by Friday. Follow up with Priya about the Q3 pricing deck. Ask for sign-off by Friday.\n\nDeadline: Friday.\n\nLet me know if anything needs changing.\n\nThanks,",
+        "tone": "friendly",
+        "intent": "follow-up"
+      }
+    ],
     "edit_history": []
   }
 }
