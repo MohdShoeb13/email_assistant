@@ -12,6 +12,7 @@ async rewrite to stream.
 
 from __future__ import annotations
 
+import os
 from typing import Any, Iterator
 
 from fastapi import FastAPI, HTTPException
@@ -38,15 +39,20 @@ app = FastAPI(
     description="Multi-agent email drafting over LangGraph with cross-provider model routing.",
 )
 
-# The Vite dev server runs on a different origin. In production both halves are
-# served from one origin and this middleware is inert.
+# The Vite dev server runs on a different origin, as does the deployed frontend
+# (e.g. on Vercel) when the API is hosted separately. Extra production origins
+# are supplied via CORS_ORIGINS as a comma-separated list.
+_default_origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:4173",
+]
+_extra_origins = [
+    o.strip() for o in os.environ.get("CORS_ORIGINS", "").split(",") if o.strip()
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://localhost:4173",
-    ],
+    allow_origins=_default_origins + _extra_origins,
     allow_credentials=False,
     allow_methods=["GET", "POST", "PUT", "OPTIONS"],
     allow_headers=["*"],
@@ -144,7 +150,11 @@ def save_edit(draft_id: str, request: EditRequest) -> dict[str, Any]:
     if request.original_body.strip() == request.edited_body.strip():
         # Nothing changed, so there is nothing to learn. Saying so beats storing
         # a no-op the stylist would later have to filter out.
-        return {"saved": False, "reason": "no changes to learn from", "evidence_count": 0}
+        return {
+            "saved": False,
+            "reason": "no changes to learn from",
+            "evidence_count": 0,
+        }
 
     store = _store()
     store.record_edit(

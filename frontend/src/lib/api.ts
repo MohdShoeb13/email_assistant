@@ -2,7 +2,9 @@
 
 import type { AppConfig, GenerateRequest, StreamEvent, UserProfile } from "@/lib/types"
 
-const BASE = "/api"
+// In dev this stays "/api" and Vite proxies it. In production (Vercel) set
+// VITE_API_BASE to the backend origin, e.g. https://email-assistant-api.onrender.com/api
+const BASE = import.meta.env.VITE_API_BASE ?? "/api"
 
 async function json<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${BASE}${path}`, {
